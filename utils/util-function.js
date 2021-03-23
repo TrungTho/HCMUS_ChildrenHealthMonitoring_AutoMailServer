@@ -11,6 +11,16 @@ function monthDiff(d1, d2) {
   return months <= 0 ? 0 : months;
 }
 
+function mailSending(email, listOfVaccines) {
+  console.log(email);
+  let details = [],
+    count = 1;
+  listOfVaccines.forEach((element) => {
+    details.push(count++ + ". " + element.vaccine + " (" + element.note + ") ");
+  });
+  console.log(details);
+}
+
 module.exports = {
   sendNotificationMail: async function () {
     console.log("begin");
@@ -44,6 +54,7 @@ module.exports = {
           totalMonthAge
         );
         //call function to send email
+        await mailSending(userEmail, listVaccineToInject);
       }
     });
 
