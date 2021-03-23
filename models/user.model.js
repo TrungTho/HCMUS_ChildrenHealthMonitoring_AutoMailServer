@@ -34,9 +34,19 @@ module.exports = {
 
   //get an single user by user id
   async getSingle(id) {
-    const rows = await db.load(`select * from ${TABLE_NAME} where id = ${id} `);
+    const rows = await db.load(
+      `select * from ${TABLE_NAME} where id = ${id} and isDisable = 0`
+    );
     if (rows.length === 0) return null;
     return rows[0];
+  },
+
+  async getEmailById(id) {
+    const rows = await db.load(
+      `select email from ${TABLE_NAME} where id = ${id} and isDisable = 0`
+    );
+    if (rows.length === 0) return null;
+    return rows[0].email;
   },
 
   async getSingleByUsername(username) {
