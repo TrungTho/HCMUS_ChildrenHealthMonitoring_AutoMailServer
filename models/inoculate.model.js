@@ -34,6 +34,22 @@ module.exports = {
     return db.load(`select DISTINCT vaccine from ${TABLE_NAME}`);
   },
 
+  getAllVaccineByInjectionAge(age) {
+    return db.load(`select * from ${TABLE_NAME} where injectionAge = ${age}`);
+  },
+
+  getAllInjectionAgeWithoutLoopSpan() {
+    return db.load(
+      `select distinct injectionAge from ${TABLE_NAME} where loopSpan=0`
+    );
+  },
+
+  getAllLoopSpanInjection() {
+    return db.load(
+      `select injectionAge, loopSpan from ${TABLE_NAME} where loopSpan!=0`
+    );
+  },
+
   //fulltext search with querystring
   searchAll(querystring) {
     return db.load(
