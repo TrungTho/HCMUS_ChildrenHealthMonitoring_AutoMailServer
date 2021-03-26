@@ -1,3 +1,4 @@
+const { json } = require("express");
 const moment = require("moment");
 const diaryModel = require("../models/diary.model");
 const inoculateModel = require("../models/inoculate.model");
@@ -28,7 +29,7 @@ module.exports = {
     const currentDate = new Date();
 
     //get all diary's dob to compare
-    const diaries = await diaryModel.getAllToSendMail();
+    const diaries = await diaryModel.getAllToSendMail(currentDate.getMonth());
 
     //get milestones of incjection from db to compare with diary's dob
     const singleAges = await inoculateModel.getAllInjectionAgeWithoutLoopSpan();
@@ -40,6 +41,8 @@ module.exports = {
 
       // console.log(totalMonthAge);
 
+      var listVaccineToInject = [];
+
       //check for injection without looping time
       if (
         singleAges.findIndex(
@@ -47,14 +50,34 @@ module.exports = {
         ) === -1
       ) {
       } else {
-        //get email of diary's owner
-        let userEmail = await userModel.getEmailById(element.id_user);
         //get all vaccine need to be injected
-        let listVaccineToInject = await inoculateModel.getAllVaccineByInjectionAge(
+        listVaccineToInject = await inoculateModel.getAllVaccineByInjectionAge(
           totalMonthAge
         );
+      }
+
+      //check for injection with looping time
+      loopAges.forEach(async (element) => {
+        if (
+          (totalMonthAge - parseInt(element.injectionAge)) %
+            parseInt(element.loopSpan) ===
+          0
+        ) {
+          await listVaccineToInject.push(
+            await inoculateModel.getSingle(element.id)
+          );
+        }
+      });
+
+      //check if that diary has any vaccine need to be injected
+      if (listVaccineToInject.length !== 0) {
+        //get email of diary's owner
+        let userEmail = await userModel.getEmailById(element.id_user);
         //call function to send email
         await mailSending(userEmail, listVaccineToInject);
+
+        //set lasttimeemail to this month to ingnore next time query in the same month
+        await diaryModel.setLastTimeMail(element.id, currentDate.getMonth());
       }
     });
 

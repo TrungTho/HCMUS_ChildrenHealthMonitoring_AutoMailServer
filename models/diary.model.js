@@ -37,9 +37,9 @@ module.exports = {
     );
   },
 
-  getAllToSendMail() {
+  getAllToSendMail(month) {
     return db.load(
-      `select id, fullname, dob, gender, id_user from ${TABLE_NAME} where isDel=false`
+      `select id, fullname, dob, gender, id_user from ${TABLE_NAME} where isDel=false and lastTimeMail!= ${month}`
     );
   },
 
@@ -55,5 +55,11 @@ module.exports = {
   //function delete event "logically"
   setDelete(id) {
     return db.load(`update ${TABLE_NAME} set isDel=true where id=${id}`);
+  },
+
+  setLastTimeMail(id, month) {
+    return db.load(
+      `update ${TABLE_NAME} set lastTimeMail=${month} where id=${id}`
+    );
   },
 };

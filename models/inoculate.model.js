@@ -39,14 +39,12 @@ module.exports = {
   },
 
   getAllInjectionAgeWithoutLoopSpan() {
-    return db.load(
-      `select distinct injectionAge from ${TABLE_NAME} where loopSpan=0`
-    );
+    return db.load(`select distinct injectionAge from ${TABLE_NAME} `);
   },
 
   getAllLoopSpanInjection() {
     return db.load(
-      `select injectionAge, loopSpan from ${TABLE_NAME} where loopSpan!=0`
+      `select id,injectionAge, loopSpan from ${TABLE_NAME} where loopSpan!=0`
     );
   },
 
