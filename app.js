@@ -28,7 +28,7 @@ app.use(
 require("./middlewares/routes.mdw")(app); //mdw for routing
 require("./middlewares/errors.mdw")(app); //mdw for err handling
 
-globalFunction.sendNotificationMail();
+// globalFunction.sendNotificationMail();
 
 //lang nghe o cong
 const PORT = process.env.LISTENPORT;

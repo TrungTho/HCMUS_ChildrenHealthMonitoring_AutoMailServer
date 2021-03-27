@@ -3,6 +3,7 @@ const moment = require("moment");
 const diaryModel = require("../models/diary.model");
 const inoculateModel = require("../models/inoculate.model");
 const userModel = require("../models/user.model");
+const nodemailer = require("nodemailer");
 
 function monthDiff(d1, d2) {
   var months;
@@ -12,14 +13,58 @@ function monthDiff(d1, d2) {
   return months <= 0 ? 0 : months;
 }
 
-function buildMailContent(email, listOfVaccines) {
-  console.log(email);
-  let details = [],
+function buildMailContent(listOfVaccines) {
+  // console.log(email);
+  let details = "",
     count = 1;
   for (element of listOfVaccines) {
-    details.push(count++ + ". " + element.vaccine + " (" + element.note + ") ");
+    details +=
+      "<p><strong>" +
+      count++ +
+      ". " +
+      element.vaccine +
+      "</strong>" +
+      " (" +
+      element.note +
+      ") </p>";
   }
-  console.log(details);
+  return details;
+  // console.log(details);
+}
+
+function sendMail(clientFullname, clientEmail, diaryName, emailContents) {
+  try {
+    //send email confirm
+    var transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.CONTACT_EMAIL,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+    });
+
+    var mailOptions = {
+      from: process.env.CONTACT_EMAIL,
+      to: clientEmail,
+      subject: "[CHM-Team] Thông báo chủng ngừa Vaccine",
+      html: `<h6>Xin ch&agrave;o Anh/ Chị ${clientFullname},</h6>
+      <p>Email n&agrave;y được gửi tự động từ hệ thống Children Monitoring Health để hỗ trợ người d&ugrave;ng về lịch ti&ecirc;m ph&ograve;ng cho trẻ.&nbsp;</p>
+      <p>Hệ thống xin được th&ocirc;ng b&aacute;o đến Anh/ Chị những lịch ti&ecirc;m ph&ograve;ng sau cho b&eacute;<strong> ${diaryName}</strong>:</p>
+      ${emailContents}
+      <p>Mong Anh/ Chị d&agrave;nh ra thời gian để c&oacute; thể kịp thời chủng ngừa những loại bệnh tr&ecirc;n, nếu đ&atilde; chủng ngừa vui l&ograve;ng bỏ qua email n&agrave;y!</p>
+      <p>Xin cám ơn!</p>`,
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent: " + info.response);
+      }
+    });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 module.exports = {
@@ -77,9 +122,14 @@ module.exports = {
       //check if that diary has any vaccine need to be injected
       if (listVaccineToInject.length !== 0) {
         //get email of diary's owner
-        let userEmail = await userModel.getEmailById(diary.id_user);
+        let user = await userModel.getSingle(diary.id_user);
         //call function to send email
-        await buildMailContent(userEmail, listVaccineToInject);
+        sendMail(
+          user.fullname,
+          user.email,
+          diary.fullname,
+          buildMailContent(listVaccineToInject)
+        );
         //set lasttimeemail to this month to ingnore next time query in the same month
         //await diaryModel.setLastTimeMail(element.id, currentDate.getMonth());
       }

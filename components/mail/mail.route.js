@@ -1,10 +1,10 @@
 const express = require("express");
-const testController = require("./mail.controller");
+const mailController = require("./mail.controller");
 const router = express.Router();
 
-router.get("/", testController.testFullText);
+router.get("/", mailController.testFullText);
 
-router.get("/connection", testController.logConnectionStats);
+router.get("/connection", mailController.logConnectionStats);
 
 // router.get("/schedule-task", testController.scheduleSendThing);
 
