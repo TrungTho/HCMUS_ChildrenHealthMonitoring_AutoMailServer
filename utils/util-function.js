@@ -12,7 +12,7 @@ function monthDiff(d1, d2) {
   return months <= 0 ? 0 : months;
 }
 
-function mailSending(email, listOfVaccines) {
+function buildMailContent(email, listOfVaccines) {
   console.log(email);
   let details = [],
     count = 1;
@@ -79,7 +79,7 @@ module.exports = {
         //get email of diary's owner
         let userEmail = await userModel.getEmailById(diary.id_user);
         //call function to send email
-        await mailSending(userEmail, listVaccineToInject);
+        await buildMailContent(userEmail, listVaccineToInject);
         //set lasttimeemail to this month to ingnore next time query in the same month
         //await diaryModel.setLastTimeMail(element.id, currentDate.getMonth());
       }
