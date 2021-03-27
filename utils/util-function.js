@@ -136,6 +136,7 @@ module.exports = {
         //await diaryModel.setLastTimeMail(element.id, currentDate.getMonth());
 
         //increase number of sent email
+        countSentEmail++;
       }
     }
 

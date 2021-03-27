@@ -18,7 +18,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: process.env.REACT_SERVER, //block all except this domain
+    origin: process.env.ALLOW_ORIGIN, //block all except this domain
     credentials: true, //turn on cookie http through cors
   })
 );
