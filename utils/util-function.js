@@ -47,7 +47,7 @@ function sendMail(clientFullname, clientEmail, diaryName, emailContents) {
       from: process.env.CONTACT_EMAIL,
       to: clientEmail,
       subject: "[CHM-Team] Thông báo chủng ngừa Vaccine",
-      html: `<h6>Xin ch&agrave;o Anh/ Chị ${clientFullname},</h6>
+      html: `<h4>Xin ch&agrave;o Anh/ Chị ${clientFullname},</h4>
       <p>Email n&agrave;y được gửi tự động từ hệ thống Children Monitoring Health để hỗ trợ người d&ugrave;ng về lịch ti&ecirc;m ph&ograve;ng cho trẻ.&nbsp;</p>
       <p>Hệ thống xin được th&ocirc;ng b&aacute;o đến Anh/ Chị những lịch ti&ecirc;m ph&ograve;ng sau cho b&eacute;<strong> ${diaryName}</strong>:</p>
       ${emailContents}
@@ -72,6 +72,8 @@ module.exports = {
     console.log("begin");
     //create variable to keep today's date
     const currentDate = new Date();
+
+    let countSentEmail = 0;
 
     //get all diary's dob to compare
     const diaries = await diaryModel.getAllToSendMail(currentDate.getMonth());
@@ -132,10 +134,13 @@ module.exports = {
         );
         //set lasttimeemail to this month to ingnore next time query in the same month
         //await diaryModel.setLastTimeMail(element.id, currentDate.getMonth());
+
+        //increase number of sent email
       }
     }
 
-    //console.log(diaries);
     console.log("end");
+
+    return countSentEmail;
   },
 };
