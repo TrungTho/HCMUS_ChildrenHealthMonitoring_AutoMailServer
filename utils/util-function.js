@@ -16,9 +16,9 @@ function mailSending(email, listOfVaccines) {
   console.log(email);
   let details = [],
     count = 1;
-  listOfVaccines.forEach((element) => {
+  for (element of listOfVaccines) {
     details.push(count++ + ". " + element.vaccine + " (" + element.note + ") ");
-  });
+  }
   console.log(details);
 }
 
@@ -36,8 +36,8 @@ module.exports = {
     const loopAges = await inoculateModel.getAllLoopSpanInjection();
 
     //calculate age of each diary (month)
-    diaries.forEach(async (element) => {
-      let totalMonthAge = monthDiff(new Date(element.dob), currentDate);
+    for (diary of diaries) {
+      let totalMonthAge = monthDiff(new Date(diary.dob), currentDate);
 
       // console.log(totalMonthAge);
 
@@ -57,7 +57,7 @@ module.exports = {
       }
 
       //check for injection with looping time
-      await loopAges.forEach(async (element) => {
+      for (element of loopAges) {
         try {
           if (
             (totalMonthAge - parseInt(element.injectionAge)) %
@@ -72,19 +72,18 @@ module.exports = {
         } catch (error) {
           throw error;
         }
-      });
-      console.log("out", listVaccineToInject);
+      }
 
       //check if that diary has any vaccine need to be injected
       if (listVaccineToInject.length !== 0) {
-        // //get email of diary's owner
-        // let userEmail = await userModel.getEmailById(element.id_user);
-        // //call function to send email
-        // await mailSending(userEmail, listVaccineToInject);
-        // //set lasttimeemail to this month to ingnore next time query in the same month
-        // await diaryModel.setLastTimeMail(element.id, currentDate.getMonth());
+        //get email of diary's owner
+        let userEmail = await userModel.getEmailById(diary.id_user);
+        //call function to send email
+        await mailSending(userEmail, listVaccineToInject);
+        //set lasttimeemail to this month to ingnore next time query in the same month
+        //await diaryModel.setLastTimeMail(element.id, currentDate.getMonth());
       }
-    });
+    }
 
     //console.log(diaries);
     console.log("end");
