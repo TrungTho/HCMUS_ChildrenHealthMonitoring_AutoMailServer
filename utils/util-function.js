@@ -41,7 +41,7 @@ module.exports = {
 
       // console.log(totalMonthAge);
 
-      var listVaccineToInject = [];
+      let listVaccineToInject = [];
 
       //check for injection without looping time
       if (
@@ -57,27 +57,32 @@ module.exports = {
       }
 
       //check for injection with looping time
-      loopAges.forEach(async (element) => {
-        if (
-          (totalMonthAge - parseInt(element.injectionAge)) %
-            parseInt(element.loopSpan) ===
-          0
-        ) {
-          await listVaccineToInject.push(
-            await inoculateModel.getSingle(element.id)
-          );
+      await loopAges.forEach(async (element) => {
+        try {
+          if (
+            (totalMonthAge - parseInt(element.injectionAge)) %
+              parseInt(element.loopSpan) ===
+            0
+          ) {
+            const vaccine = await inoculateModel.getSingle(element.id);
+            listVaccineToInject.push(vaccine);
+            // console.log("in", listVaccineToInject);
+          } else {
+          }
+        } catch (error) {
+          throw error;
         }
       });
+      console.log("out", listVaccineToInject);
 
       //check if that diary has any vaccine need to be injected
       if (listVaccineToInject.length !== 0) {
-        //get email of diary's owner
-        let userEmail = await userModel.getEmailById(element.id_user);
-        //call function to send email
-        await mailSending(userEmail, listVaccineToInject);
-
-        //set lasttimeemail to this month to ingnore next time query in the same month
-        await diaryModel.setLastTimeMail(element.id, currentDate.getMonth());
+        // //get email of diary's owner
+        // let userEmail = await userModel.getEmailById(element.id_user);
+        // //call function to send email
+        // await mailSending(userEmail, listVaccineToInject);
+        // //set lasttimeemail to this month to ingnore next time query in the same month
+        // await diaryModel.setLastTimeMail(element.id, currentDate.getMonth());
       }
     });
 
