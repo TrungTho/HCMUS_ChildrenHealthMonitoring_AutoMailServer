@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.post("/manual-send-mail", mailController.manualSendMail);
 
-// router.get("/schedule-task", testController.scheduleSendThing);
+router.post("/stop-auto-send-mail", mailController.stopAutoSendMail);
+router.post("/start-auto-send-mail", mailController.startAutoSendMail);
 
 module.exports = router;
