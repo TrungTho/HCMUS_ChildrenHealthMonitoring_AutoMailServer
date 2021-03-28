@@ -1,6 +1,6 @@
 const globalFunction = require("../../utils/util-function");
 
-module.exports = testController = {
+module.exports = mailController = {
   manualSendMail: async function (req, res) {
     try {
       const numberOfSentEmail = await globalFunction.sendNotificationMail();

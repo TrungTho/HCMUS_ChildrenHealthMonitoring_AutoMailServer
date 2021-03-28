@@ -3,8 +3,8 @@ require("express-async-errors");
 const dotenv = require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const scheduleTaskMdw = require("./middlewares/schedule-task.mdw");
 const app = express();
-const globalFunction = require("./utils/util-function");
 
 //parser
 app.use(
@@ -27,6 +27,8 @@ app.use(
 
 require("./middlewares/routes.mdw")(app); //mdw for routing
 require("./middlewares/errors.mdw")(app); //mdw for err handling
+
+// scheduleTaskMdw.autoStartMailing();
 
 //lang nghe o cong
 const PORT = process.env.LISTENPORT;
