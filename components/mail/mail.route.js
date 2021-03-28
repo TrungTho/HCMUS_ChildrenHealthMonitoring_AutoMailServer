@@ -5,8 +5,8 @@ const router = express.Router();
 // router.get("/", mailController.testFullText);
 
 router.post("/manual-send-mail", mailController.manualSendMail);
-
 router.post("/stop-auto-send-mail", mailController.stopAutoSendMail);
 router.post("/start-auto-send-mail", mailController.startAutoSendMail);
+router.post("/get-state", mailController.getAutoMailState);
 
 module.exports = router;

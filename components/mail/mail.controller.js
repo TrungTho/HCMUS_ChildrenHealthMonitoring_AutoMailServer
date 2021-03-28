@@ -15,6 +15,7 @@ module.exports = mailController = {
   startAutoSendMail: async function (req, res) {
     try {
       scheduleTaskMdw.startAutoMailing();
+      scheduleTaskMdw.autoMailState = true;
       return res.send({ success: true });
     } catch (error) {
       return res.status(406).send({ success: false, error });
@@ -24,7 +25,16 @@ module.exports = mailController = {
   stopAutoSendMail: async function (req, res) {
     try {
       scheduleTaskMdw.stopAutoMailing();
+      scheduleTaskMdw.autoMailState = false;
       return res.send({ success: true });
+    } catch (error) {
+      return res.status(406).send({ success: false, error });
+    }
+  },
+
+  getAutoMailState: async function (req, res) {
+    try {
+      return res.send({ success: true, state: scheduleTaskMdw.autoMailState });
     } catch (error) {
       return res.status(406).send({ success: false, error });
     }
