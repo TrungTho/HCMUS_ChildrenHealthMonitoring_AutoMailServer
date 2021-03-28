@@ -1,4 +1,5 @@
 const cron = require("node-cron");
+const globalFunction = require("../utils/util-function");
 
 let task;
 
@@ -6,9 +7,9 @@ module.exports = scheduleTask = {
   autoMailState: true,
   startAutoMailing: async function () {
     task = cron.schedule(
-      "* * * * * *",
+      "0 6 * * *",
       () => {
-        console.log("hehe");
+        globalFunction.sendNotificationMail();
       },
       { scheduled: true, timezone: "Asia/Bangkok" }
     );
