@@ -1,5 +1,6 @@
 const scheduleTaskMdw = require("../../middlewares/schedule-task.mdw");
 const globalFunction = require("../../utils/util-function");
+const cron = require("node-cron");
 
 module.exports = mailController = {
   manualSendMail: async function (req, res) {
@@ -8,6 +9,7 @@ module.exports = mailController = {
       console.log(numberOfSentEmail);
       return res.send({ success: true, numberOfSentEmail });
     } catch (error) {
+      console.log(error);
       return res.status(406).send({ success: false, error });
     }
   },
@@ -36,6 +38,27 @@ module.exports = mailController = {
     try {
       return res.send({ success: true, state: scheduleTaskMdw.autoMailState });
     } catch (error) {
+      return res.status(406).send({ success: false, error });
+    }
+  },
+
+  sendCustomMail: async function (req, res) {
+    try {
+      console.log("---------------begin---------------");
+      //get configs
+      const timeString = req.body.timeString;
+      const contents = req.body.contents;
+      cron.schedule(
+        timeString,
+        () => {
+          // globalFunction.sendMail();
+          console.log(contents);
+        },
+        { scheduled: true, timezone: "Asia/Bangkok" }
+      );
+      return res.send({ success: true });
+    } catch (error) {
+      console.log("err:", error);
       return res.status(406).send({ success: false, error });
     }
   },

@@ -9,4 +9,6 @@ router.post("/stop-auto-send-mail", mailController.stopAutoSendMail);
 router.post("/start-auto-send-mail", mailController.startAutoSendMail);
 router.post("/get-state", mailController.getAutoMailState);
 
+router.post("/send-custom-mail", mailController.sendCustomMail);
+
 module.exports = router;
