@@ -133,7 +133,7 @@ module.exports = {
           buildMailContent(listVaccineToInject)
         );
         //set lasttimeemail to this month to ingnore next time query in the same month
-        //await diaryModel.setLastTimeMail(element.id, currentDate.getMonth());
+        // await diaryModel.setLastTimeMail(element.id, currentDate.getMonth());
 
         //increase number of sent email
         countSentEmail++;

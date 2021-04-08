@@ -39,7 +39,7 @@ module.exports = {
 
   getAllToSendMail(month) {
     return db.load(
-      `select id, fullname, dob, gender, id_user from ${TABLE_NAME} where isDel=false and lastTimeMail!= ${month}`
+      `select id, fullname, dob, gender, id_user from ${TABLE_NAME} where isDel=false and lastTimeMail!= ${month} and defaultMail=true`
     );
   },
 
