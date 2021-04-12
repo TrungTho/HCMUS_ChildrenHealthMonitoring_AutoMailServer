@@ -42,27 +42,27 @@ module.exports = mailController = {
     }
   },
 
-  sendCustomMail: async function (req, res) {
-    try {
-      console.log("---------------begin---------------");
-      //get configs
-      const timeString = req.body.timeString;
-      const contents = req.body.contents;
-      cron.schedule(
-        timeString,
-        () => {
-          // globalFunction.sendMail();
-          console.log(contents);
-          // console.log(task, contents);
-        },
-        { scheduled: true, timezone: "Asia/Bangkok" }
-      );
-      return res.send({ success: true });
-    } catch (error) {
-      console.log("err:", error);
-      return res.status(406).send({ success: false, error });
-    }
-  },
+  // sendCustomMail: async function (req, res) {
+  //   try {
+  //     console.log("---------------begin---------------");
+  //     //get configs
+  //     const timeString = req.body.timeString;
+  //     const contents = req.body.contents;
+  //     cron.schedule(
+  //       timeString,
+  //       () => {
+  //         // globalFunction.sendMail();
+  //         console.log(contents);
+  //         // console.log(task, contents);
+  //       },
+  //       { scheduled: true, timezone: "Asia/Bangkok" }
+  //     );
+  //     return res.send({ success: true });
+  //   } catch (error) {
+  //     console.log("err:", error);
+  //     return res.status(406).send({ success: false, error });
+  //   }
+  // },
 
   //custom task in array
 
@@ -72,8 +72,9 @@ module.exports = mailController = {
       //get configs
       const timeString = req.body.timeString;
       const contents = req.body.contents;
-      scheduleTaskMdw.arrayTask.push(
-        cron.schedule(
+      scheduleTaskMdw.arrayTask.push({
+        eventId: req.body.eventId, //id of event for finding & modifying after
+        task: cron.schedule(
           timeString,
           () => {
             // globalFunction.sendMail();
@@ -81,8 +82,8 @@ module.exports = mailController = {
             // console.log(task, contents);
           },
           { scheduled: true, timezone: "Asia/Bangkok" }
-        )
-      );
+        ),
+      });
 
       console.log(scheduleTaskMdw.arrayTask);
 
@@ -94,8 +95,12 @@ module.exports = mailController = {
 
   destroyTaskInArray: async function (req, res) {
     try {
-      console.log("index", req.body.index);
-      scheduleTaskMdw.destroyTaskInArray(req.body.index);
+      console.log("body", req.body);
+      const index = scheduleTaskMdw.arrayTask.findIndex(
+        (element) => String(element.eventId) === String(req.body.eventId)
+      );
+      console.log("index", index);
+      scheduleTaskMdw.destroyTaskInArray(index);
       return res.send({ success: true });
     } catch (error) {
       return res.status(406).send({ success: false, error });
@@ -104,10 +109,24 @@ module.exports = mailController = {
 
   stopTaskInArray: async function (req, res) {
     try {
-      console.log("index", req.body.index);
-      scheduleTaskMdw.stopTaskInArray(req.body.index);
+      console.log("body", req.body);
+      const index = scheduleTaskMdw.arrayTask.findIndex(
+        (element) => String(element.eventId) === String(req.body.eventId)
+      );
+      console.log("index", index);
+      scheduleTaskMdw.stopTaskInArray(index);
       return res.send({ success: true });
     } catch (error) {
+      return res.status(406).send({ success: false, error });
+    }
+  },
+
+  getArrayTask: async function (req, res) {
+    try {
+      console.log("array: ", scheduleTaskMdw.arrayTask);
+      return res.send({ success: true });
+    } catch (error) {
+      console.log(error);
       return res.status(406).send({ success: false, error });
     }
   },

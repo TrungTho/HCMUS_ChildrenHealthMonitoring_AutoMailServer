@@ -9,8 +9,10 @@ router.post("/stop-auto-send-mail", mailController.stopAutoSendMail);
 router.post("/start-auto-send-mail", mailController.startAutoSendMail);
 router.post("/get-state", mailController.getAutoMailState);
 
-router.post("/send-custom-mail", mailController.sendCustomMail);
+// router.post("/send-custom-mail", mailController.sendCustomMail);
 router.post("/new-custom-task", mailController.pushNewTaskToArray);
 router.post("/stop-custom-task", mailController.stopTaskInArray);
+router.post("/destroy-custom-task", mailController.destroyTaskInArray);
+router.post("/get-task-array", mailController.getArrayTask);
 
 module.exports = router;
