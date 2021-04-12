@@ -4,8 +4,6 @@ const globalFunction = require("../utils/util-function");
 let task;
 
 module.exports = scheduleTask = {
-  arrayTask: [],
-
   autoMailState: true,
 
   startAutoMailing: async function () {
@@ -22,16 +20,20 @@ module.exports = scheduleTask = {
     task.stop();
   },
 
+  //work with array task & custom notification
+  arrayTask: [],
+
   stopTaskInArray: async function (index) {
     if (index > -1 && index < this.arrayTask.length) {
-      this.arrayTask[index].stop();
+      this.arrayTask[index].task.stop();
+      console.log(this.arrayTask);
     }
   },
 
   destroyTaskInArray: async function (index) {
     if (index > -1 && index < this.arrayTask.length) {
-      this.arrayTask[index].destroy();
-      console.log(this.arrayTask[index]);
+      this.arrayTask[index].task.destroy();
+      console.log(this.arrayTask);
     }
   },
 };
