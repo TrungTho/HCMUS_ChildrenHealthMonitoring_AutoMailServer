@@ -53,12 +53,51 @@ module.exports = mailController = {
         () => {
           // globalFunction.sendMail();
           console.log(contents);
+          // console.log(task, contents);
         },
         { scheduled: true, timezone: "Asia/Bangkok" }
       );
       return res.send({ success: true });
     } catch (error) {
       console.log("err:", error);
+      return res.status(406).send({ success: false, error });
+    }
+  },
+
+  //custom task in array
+
+  pushNewTaskToArray: async function (req, res) {
+    try {
+      console.log("---------------begin---------------");
+      //get configs
+      const timeString = req.body.timeString;
+      const contents = req.body.contents;
+      scheduleTaskMdw.arrayTask.push(
+        cron.schedule(
+          timeString,
+          () => {
+            // globalFunction.sendMail();
+            console.log(contents);
+            // console.log(task, contents);
+          },
+          { scheduled: true, timezone: "Asia/Bangkok" }
+        )
+      );
+
+      console.log(scheduleTaskMdw.arrayTask);
+
+      return res.send({ success: true });
+    } catch (error) {
+      return res.status(406).send({ success: false, error });
+    }
+  },
+
+  stopTaskInArray: async function (req, res) {
+    try {
+      console.log("index", req.body.index);
+      scheduleTaskMdw.stopTaskInArray(req.body.index);
+      return res.send({ success: true });
+    } catch (error) {
       return res.status(406).send({ success: false, error });
     }
   },

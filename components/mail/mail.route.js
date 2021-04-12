@@ -10,5 +10,7 @@ router.post("/start-auto-send-mail", mailController.startAutoSendMail);
 router.post("/get-state", mailController.getAutoMailState);
 
 router.post("/send-custom-mail", mailController.sendCustomMail);
+router.post("/new-custom-task", mailController.pushNewTaskToArray);
+router.post("/stop-custom-task", mailController.stopTaskInArray);
 
 module.exports = router;
