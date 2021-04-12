@@ -92,6 +92,16 @@ module.exports = mailController = {
     }
   },
 
+  destroyTaskInArray: async function (req, res) {
+    try {
+      console.log("index", req.body.index);
+      scheduleTaskMdw.destroyTaskInArray(req.body.index);
+      return res.send({ success: true });
+    } catch (error) {
+      return res.status(406).send({ success: false, error });
+    }
+  },
+
   stopTaskInArray: async function (req, res) {
     try {
       console.log("index", req.body.index);
