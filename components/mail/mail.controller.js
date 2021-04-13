@@ -163,4 +163,17 @@ module.exports = mailController = {
       return res.status(406).send({ success: false, error });
     }
   },
+
+  resetArrayTask: async function (req, res) {
+    try {
+      //call function to stop and destroy all task in  array task
+      scheduleTaskMdw.resetArrayTask();
+
+      console.log("array: ", scheduleTaskMdw.arrayTask);
+      return res.send({ success: true });
+    } catch (error) {
+      console.log(error);
+      return res.status(406).send({ success: false, error });
+    }
+  },
 };

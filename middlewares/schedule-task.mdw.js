@@ -21,7 +21,7 @@ module.exports = scheduleTask = {
   },
 
   //work with array task & custom notification
-  arrayTask: [],
+  arrayTask: [], //{eventId: ,task: }
 
   stopTaskInArray: async function (index) {
     if (index > -1 && index < this.arrayTask.length) {
@@ -35,5 +35,15 @@ module.exports = scheduleTask = {
       this.arrayTask[index].task.destroy();
       console.log(this.arrayTask);
     }
+  },
+
+  resetArrayTask: async function (index) {
+    for (task of this.arrayTask) {
+      task.task.stop();
+      task.task.destroy();
+    }
+
+    //set array task to empty
+    this.arrayTask = [];
   },
 };

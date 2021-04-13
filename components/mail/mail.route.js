@@ -15,5 +15,6 @@ router.post("/stop-custom-task", mailController.stopTaskInArray);
 router.post("/update-custom-task", mailController.updateTaskInArray);
 router.post("/destroy-custom-task", mailController.destroyTaskInArray);
 router.post("/get-task-array", mailController.getArrayTask);
+router.post("/reset-task-array", mailController.resetArrayTask);
 
 module.exports = router;
