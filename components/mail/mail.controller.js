@@ -64,7 +64,7 @@ module.exports = mailController = {
   //   }
   // },
 
-  //custom task in array
+  //--------------------------custom task in array
 
   pushNewTaskToArray: async function (req, res) {
     try {
@@ -114,7 +114,40 @@ module.exports = mailController = {
         (element) => String(element.eventId) === String(req.body.eventId)
       );
       console.log("index", index);
+
+      //stop old running task
       scheduleTaskMdw.stopTaskInArray(index);
+
+      return res.send({ success: true });
+    } catch (error) {
+      return res.status(406).send({ success: false, error });
+    }
+  },
+
+  updateTaskInArray: async function (req, res) {
+    try {
+      console.log("update body", req.body);
+      const timeString = req.body.timeString;
+      const contents = req.body.contents;
+
+      const index = scheduleTaskMdw.arrayTask.findIndex(
+        (element) => String(element.eventId) === String(req.body.eventId)
+      );
+      console.log("index", index);
+
+      //stop old running task
+      scheduleTaskMdw.stopTaskInArray(index);
+
+      //update new status for task
+      scheduleTaskMdw.arrayTask[index].task = cron.schedule(
+        timeString,
+        () => {
+          // globalFunction.sendMail();
+          console.log(contents);
+          // console.log(task, contents);
+        },
+        { scheduled: true, timezone: "Asia/Bangkok" }
+      );
       return res.send({ success: true });
     } catch (error) {
       return res.status(406).send({ success: false, error });

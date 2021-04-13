@@ -12,6 +12,7 @@ router.post("/get-state", mailController.getAutoMailState);
 // router.post("/send-custom-mail", mailController.sendCustomMail);
 router.post("/new-custom-task", mailController.pushNewTaskToArray);
 router.post("/stop-custom-task", mailController.stopTaskInArray);
+router.post("/update-custom-task", mailController.updateTaskInArray);
 router.post("/destroy-custom-task", mailController.destroyTaskInArray);
 router.post("/get-task-array", mailController.getArrayTask);
 
