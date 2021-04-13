@@ -6,9 +6,10 @@ let task;
 module.exports = scheduleTask = {
   autoMailState: true,
 
+  //some things this server will work by it owns
   startAutoMailing: async function () {
     task = cron.schedule(
-      "0 6 * * *",
+      "0 6 * * *", //6:00 am
       () => {
         globalFunction.sendNotificationMail();
       },
@@ -16,6 +17,17 @@ module.exports = scheduleTask = {
     );
   },
 
+  scheduleResetTaskArray: async function () {
+    cron.schedule(
+      "1 0 * * *", //00:01 am
+      () => {
+        this.resetArrayTask();
+      },
+      { scheduled: true, timezone: "Asia/Bangkok" }
+    );
+  },
+
+  //-----------------------------------------
   stopAutoMailing: async function () {
     task.stop();
   },
@@ -37,7 +49,7 @@ module.exports = scheduleTask = {
     }
   },
 
-  resetArrayTask: async function (index) {
+  resetArrayTask: async function () {
     for (task of this.arrayTask) {
       task.task.stop();
       task.task.destroy();
