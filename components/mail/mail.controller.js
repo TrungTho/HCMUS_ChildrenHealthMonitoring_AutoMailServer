@@ -77,9 +77,16 @@ module.exports = mailController = {
         task: cron.schedule(
           timeString,
           () => {
-            // globalFunction.sendMail();
+            //log for debuging
             console.log(contents);
-            // console.log(task, contents);
+
+            //call fucntion to send mail
+            globalFunction.sendMail(
+              contents.clientFullname,
+              contents.clientEmail,
+              contents.diaryName,
+              contents.emailContents
+            );
           },
           { scheduled: true, timezone: "Asia/Bangkok" }
         ),
@@ -142,9 +149,16 @@ module.exports = mailController = {
       scheduleTaskMdw.arrayTask[index].task = cron.schedule(
         timeString,
         () => {
-          // globalFunction.sendMail();
+          //log for debuging
           console.log(contents);
-          // console.log(task, contents);
+
+          //call fucntion to send mail
+          globalFunction.sendMail(
+            contents.clientFullname,
+            contents.clientEmail,
+            contents.diaryName,
+            contents.emailContents
+          );
         },
         { scheduled: true, timezone: "Asia/Bangkok" }
       );

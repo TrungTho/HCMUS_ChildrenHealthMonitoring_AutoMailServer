@@ -68,6 +68,8 @@ function sendMail(clientFullname, clientEmail, diaryName, emailContents) {
 }
 
 module.exports = {
+  sendMail,
+
   sendNotificationMail: async function () {
     console.log("begin");
     //create variable to keep today's date
