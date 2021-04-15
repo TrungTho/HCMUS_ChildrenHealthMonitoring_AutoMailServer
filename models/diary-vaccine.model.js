@@ -50,7 +50,7 @@ module.exports = {
   getAllReminderInDay(id) {
     return db.load(
       `SELECT * FROM ${TABLE_NAME}
-      WHERE Month(log_date) = Month(CURDATE()) AND year(log_date) = year(CURDATE()) and  Day(log_date) = day(CURDATE()) and isRemind=true;`
+      WHERE Month(remindDate) = Month(CURDATE()) AND year(remindDate) = year(CURDATE()) and  Day(remindDate) = day(CURDATE()) and isRemind=true;`
     );
   },
 
