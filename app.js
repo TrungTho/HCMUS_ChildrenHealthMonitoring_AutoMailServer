@@ -29,6 +29,7 @@ require("./middlewares/routes.mdw")(app); //mdw for routing
 require("./middlewares/errors.mdw")(app); //mdw for err handling
 
 scheduleTaskMdw.startAutoMailing();
+scheduleTaskMdw.queryNewTaskInDb();
 
 //lang nghe o cong
 const PORT = process.env.LISTENPORT;

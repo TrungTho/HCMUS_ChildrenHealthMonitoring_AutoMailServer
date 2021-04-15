@@ -1,4 +1,7 @@
 const cron = require("node-cron");
+const diaryVaccineModel = require("../models/diary-vaccine.model");
+const diaryModel = require("../models/diary.model");
+const userModel = require("../models/user.model");
 const globalFunction = require("../utils/util-function");
 
 let task;
@@ -57,5 +60,59 @@ module.exports = scheduleTask = {
 
     //set array task to empty
     this.arrayTask = [];
+  },
+
+  queryNewTaskInDb: async function () {
+    //get all remider need to be reminded in db
+    const reminders = await diaryVaccineModel.getAllReminderInDay();
+
+    console.log("hehehe", reminders);
+    //add reminder => array task => schedule noti
+    for (reminder of reminders) {
+      let remindTime = reminder.remindDate;
+
+      let timeString = `"${new Date(remindTime).getSeconds()} ${new Date(
+        remindTime
+      ).getMinutes()} ${new Date(remindTime).getHours()} * * *"`;
+
+      let diaryInfor = diaryModel.getSingle(reminder.id_diary);
+      let userInfor = userModel.getSingle(diaryInfor.id_user);
+
+      let contents = {
+        clientFullname: userInfor.fullname,
+        clientEmail: userInfor.email,
+        diaryName: diaryInfor.fullname,
+        emailContents:
+          "<p><strong>" +
+          1 +
+          ". " +
+          reminder.vaccineName +
+          "</strong>" +
+          " (" +
+          reminder.vaccine +
+          ") </p>",
+      };
+
+      //push new task to array task
+      this.arrayTask.push({
+        eventId: reminder.id, //id of event for finding & modifying after
+        task: cron.schedule(
+          timeString,
+          () => {
+            //log for debuging
+            console.log(contents);
+
+            //call fucntion to send mail
+            globalFunction.sendMail(
+              contents.clientFullname,
+              contents.clientEmail,
+              contents.diaryName,
+              contents.emailContents
+            );
+          },
+          { scheduled: true, timezone: "Asia/Bangkok" }
+        ),
+      });
+    }
   },
 };
