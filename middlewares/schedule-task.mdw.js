@@ -49,6 +49,8 @@ module.exports = scheduleTask = {
     if (index > -1 && index < this.arrayTask.length) {
       this.arrayTask[index].task.stop();
       console.log(this.arrayTask);
+    } else {
+      console.log("out of array");
     }
   },
 
@@ -57,6 +59,8 @@ module.exports = scheduleTask = {
       this.arrayTask[index].task.stop();
       this.arrayTask[index].task.destroy();
       console.log(this.arrayTask);
+    } else {
+      console.log("out of array");
     }
   },
 
