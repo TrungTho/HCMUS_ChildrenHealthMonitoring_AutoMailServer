@@ -151,7 +151,7 @@ module.exports = mailController = {
           timeString,
           () => {
             //log for debuging
-            console.log(contents);
+            console.log("update content", contents);
 
             //call fucntion to send mail
             globalFunction.sendMail(
