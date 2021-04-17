@@ -142,26 +142,28 @@ module.exports = mailController = {
       );
       console.log("index", index);
 
-      //stop old running task
+      //first: stop old running task
       scheduleTaskMdw.stopTaskInArray(index);
 
-      //update new status for task
-      scheduleTaskMdw.arrayTask[index].task = cron.schedule(
-        timeString,
-        () => {
-          //log for debuging
-          console.log(contents);
+      //second: update new status for task
+      if (index > -1 && index < scheduleTaskMdw.arrayTask.length) {
+        scheduleTaskMdw.arrayTask[index].task = cron.schedule(
+          timeString,
+          () => {
+            //log for debuging
+            console.log(contents);
 
-          //call fucntion to send mail
-          globalFunction.sendMail(
-            contents.clientFullname,
-            contents.clientEmail,
-            contents.diaryName,
-            contents.emailContents
-          );
-        },
-        { scheduled: true, timezone: "Asia/Bangkok" }
-      );
+            //call fucntion to send mail
+            globalFunction.sendMail(
+              contents.clientFullname,
+              contents.clientEmail,
+              contents.diaryName,
+              contents.emailContents
+            );
+          },
+          { scheduled: true, timezone: "Asia/Bangkok" }
+        );
+      }
       return res.send({ success: true });
     } catch (error) {
       return res.status(406).send({ success: false, error });
@@ -171,7 +173,10 @@ module.exports = mailController = {
   getArrayTask: async function (req, res) {
     try {
       console.log("array: ", scheduleTaskMdw.arrayTask);
-      return res.send({ success: true });
+      return res.send({
+        success: true,
+        counter: scheduleTaskMdw.arrayTask.length,
+      });
     } catch (error) {
       console.log(error);
       return res.status(406).send({ success: false, error });
