@@ -54,6 +54,7 @@ module.exports = scheduleTask = {
 
   destroyTaskInArray: async function (index) {
     if (index > -1 && index < this.arrayTask.length) {
+      this.arrayTask[index].task.stop();
       this.arrayTask[index].task.destroy();
       console.log(this.arrayTask);
     }
