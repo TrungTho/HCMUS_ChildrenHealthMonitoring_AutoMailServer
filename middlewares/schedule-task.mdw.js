@@ -68,10 +68,22 @@ module.exports = scheduleTask = {
     for (task of this.arrayTask) {
       task.task.stop();
       task.task.destroy();
+      task = null;
     }
 
     //set array task to empty
     this.arrayTask = [];
+
+    //call node's gc
+    // Force garbage collection every time this function is called
+    try {
+      if (global.gc) {
+        global.gc();
+      }
+    } catch (e) {
+      console.log("`node --expose-gc index.js`");
+      process.exit();
+    }
   },
 
   queryNewTaskInDb: async function () {

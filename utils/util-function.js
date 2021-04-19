@@ -41,6 +41,8 @@ function sendMail(clientFullname, clientEmail, diaryName, emailContents) {
         user: process.env.CONTACT_EMAIL,
         pass: process.env.EMAIL_PASSWORD,
       },
+      socketTimeout: 600000, //10 minute
+      pool: true,
     });
 
     var mailOptions = {

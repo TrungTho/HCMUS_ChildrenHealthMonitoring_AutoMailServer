@@ -92,7 +92,7 @@ module.exports = mailController = {
         ),
       });
 
-      console.log(scheduleTaskMdw.arrayTask);
+      // console.log(scheduleTaskMdw.arrayTask);
 
       return res.send({ success: true });
     } catch (error) {
