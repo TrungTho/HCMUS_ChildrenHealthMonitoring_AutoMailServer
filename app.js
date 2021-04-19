@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const scheduleTaskMdw = require("./middlewares/schedule-task.mdw");
 const app = express();
+// const globalFunction = require("./utils/util-function");
 
 //parser
 app.use(

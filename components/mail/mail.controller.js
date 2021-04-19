@@ -68,7 +68,7 @@ module.exports = mailController = {
 
   pushNewTaskToArray: async function (req, res) {
     try {
-      console.log("---------------begin---------------");
+      // console.log("---------------begin---------------");
       //get configs
       const timeString = req.body.timeString;
       const contents = req.body.contents;
@@ -78,7 +78,7 @@ module.exports = mailController = {
           timeString,
           () => {
             //log for debuging
-            console.log(contents);
+            // console.log(contents);
 
             //call fucntion to send mail
             globalFunction.sendMail(

@@ -5,6 +5,24 @@ const inoculateModel = require("../models/inoculate.model");
 const userModel = require("../models/user.model");
 const nodemailer = require("nodemailer");
 
+//config transporter with pooling
+//config transporter with pooling
+const transporter = nodemailer.createTransport({
+  // service: "gmail",
+  host: "smtp.mail.yahoo.com",
+  service: "yahoo",
+  port: 587,
+  auth: {
+    user: process.env.CONTACT_EMAIL,
+    pass: process.env.EMAIL_PASSWORD,
+  },
+  // socketTimeout: 600000, //10 minute
+  pool: true,
+  rateLimit: 25,
+  maxConnections: 10,
+  secure: false,
+});
+
 function monthDiff(d1, d2) {
   var months;
   months = (d2.getFullYear() - d1.getFullYear()) * 12;
@@ -34,18 +52,21 @@ function buildMailContent(listOfVaccines) {
 
 function sendMail(clientFullname, clientEmail, diaryName, emailContents) {
   try {
-    //send email confirm
-    var transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.CONTACT_EMAIL,
-        pass: process.env.EMAIL_PASSWORD,
-      },
-      socketTimeout: 600000, //10 minute
-      pool: true,
-    });
+    // //config transporter with pooling
+    // const transporter = nodemailer.createTransport({
+    //   service: "gmail",
+    //   port: 587,
+    //   auth: {
+    //     user: process.env.CONTACT_EMAIL,
+    //     pass: process.env.EMAIL_PASSWORD,
+    //   },
+    //   socketTimeout: 600000, //10 minute
+    //   pool: true,
+    //   rateLimit: 50,
+    //   maxConnections: 10,
+    // });
 
-    var mailOptions = {
+    const mailOptions = {
       from: process.env.CONTACT_EMAIL,
       to: clientEmail,
       subject: "[CHM-Team] Thông báo chủng ngừa Vaccine",
