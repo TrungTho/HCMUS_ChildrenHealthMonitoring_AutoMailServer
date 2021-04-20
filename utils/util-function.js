@@ -8,19 +8,21 @@ const nodemailer = require("nodemailer");
 //config transporter with pooling
 //config transporter with pooling
 const transporter = nodemailer.createTransport({
-  // service: "gmail",
-  host: "smtp.mail.yahoo.com",
-  service: "yahoo",
-  port: 587,
+  // host: "smtp.mail.yahoo.com",
+  // service: "yahoo",
+  host: "smtp.gmail.com",
+  service: "gmail",
+  port: 465,
   auth: {
     user: process.env.CONTACT_EMAIL,
     pass: process.env.EMAIL_PASSWORD,
   },
-  // socketTimeout: 600000, //10 minute
+  socketTimeout: 600000, //10 minute, time to close a connection
   pool: true,
-  rateLimit: 25,
+  rateLimit: 1, //one mail per rateDelta (default 1 second)
+  // rateDelta:1000, a second
   maxConnections: 10,
-  secure: false,
+  secure: true,
 });
 
 function monthDiff(d1, d2) {
