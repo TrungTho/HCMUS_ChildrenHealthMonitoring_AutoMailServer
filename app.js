@@ -35,7 +35,7 @@ scheduleTaskMdw.startAutoMailing();
 // scheduleTaskMdw.queryNewTaskInDb();
 
 //lang nghe o cong
-const PORT = process.env.LISTENPORT;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   //console.log(`Example app listening at http://localhost:${PORT}`);
 });
