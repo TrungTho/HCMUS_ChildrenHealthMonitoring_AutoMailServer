@@ -8,6 +8,7 @@ router.post("/manual-send-mail", mailController.manualSendMail);
 router.post("/stop-auto-send-mail", mailController.stopAutoSendMail);
 router.post("/start-auto-send-mail", mailController.startAutoSendMail);
 router.post("/get-state", mailController.getAutoMailState);
+router.get("/get-state", mailController.getAutoMailState);
 
 // router.post("/send-custom-mail", mailController.sendCustomMail);
 router.post("/new-custom-task", mailController.pushNewTaskToArray);
