@@ -93,6 +93,12 @@ module.exports = mailController = {
       });
 
       // console.log(scheduleTaskMdw.arrayTask);
+      console.log(
+        "add new remider for " +
+          contents.clientEmail +
+          " eventId: " +
+          req.body.eventId
+      );
 
       return res.send({ success: true });
     } catch (error) {
@@ -164,6 +170,13 @@ module.exports = mailController = {
           { scheduled: true, timezone: "Asia/Bangkok" }
         );
       }
+
+      console.log(
+        "update remider for " +
+          contents.clientEmail +
+          " eventId: " +
+          req.body.eventId
+      );
       return res.send({ success: true });
     } catch (error) {
       return res.status(406).send({ success: false, error });
