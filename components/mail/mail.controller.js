@@ -97,7 +97,7 @@ module.exports = mailController = {
               contents.emailContents
             );
           },
-          { scheduled: true, timezone: "Asia/Bangkok" }
+          { scheduled: true }
         ),
       });
 
