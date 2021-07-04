@@ -69,9 +69,18 @@ module.exports = mailController = {
   pushNewTaskToArray: async function (req, res) {
     try {
       // console.log("---------------begin---------------");
+
       //get configs
       const timeString = req.body.timeString;
       const contents = req.body.contents;
+
+      console.log(
+        "acdd new remider for " +
+          contents.clientEmail +
+          " eventId: " +
+          req.body.eventId
+      );
+
       scheduleTaskMdw.arrayTask.push({
         eventId: req.body.eventId, //id of event for finding & modifying after
         task: cron.schedule(
@@ -93,6 +102,7 @@ module.exports = mailController = {
       });
 
       // console.log(scheduleTaskMdw.arrayTask);
+      console.log("add new remider finish!! ");
 
       return res.send({ success: true });
     } catch (error) {
@@ -164,6 +174,13 @@ module.exports = mailController = {
           { scheduled: true, timezone: "Asia/Bangkok" }
         );
       }
+
+      console.log(
+        "update remider for " +
+          contents.clientEmail +
+          " eventId: " +
+          req.body.eventId
+      );
       return res.send({ success: true });
     } catch (error) {
       return res.status(406).send({ success: false, error });
